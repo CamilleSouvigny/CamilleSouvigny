@@ -9,9 +9,13 @@ I’m a graduate computing engineer from the University of technology of Compiè
 ## Symbols 
 
 ✅: Project done
+
 ⌛️: Project in progress (working on it right now)
+
 📌: Project to do
+
 📥: Project to upload (already done)
+
 🎓: University project
 
 ## Project Content
