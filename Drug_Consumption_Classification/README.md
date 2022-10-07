@@ -33,6 +33,12 @@ From 11 axis we can keep the first 9 that explain 94% of the dataset variability
 ## Classification
 Apply classification for each of those 4 groups of drugs. Each individual can be classified in 1 or more of these drugs clusters. 
 
-    Each statistical method has first been tuned using GridSearchCV and validated using StratifiedKfold.
+Each statistical method has first been tuned using GridSearchCV and validated using StratifiedKfold.
+Support vector machine after PCA gives the best performances.   
 ![image](Images_readme/classifications_performances.png)
 
+## Next Steps 
+
+- Collect more datas to get more robust results.
+- Apply methods compatible with ordered categorical variables.
+- Apply classification on each drugs and not on clustered groups.
