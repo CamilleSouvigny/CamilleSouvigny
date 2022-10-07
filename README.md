@@ -20,5 +20,14 @@ I’m a graduate computing engineer from the University of technology of Compiè
 
 ## Project Content
 
-X1 : BLA BLA 1
+Project 1 : Detection of drug consumption habits : Python 🎓✅
+
+Project 2 : Wumpus Game Solver: Python, Gophersat 🎓✅
+
+Project 9 - Database for an Online Payment App: SQL, Neo4J, MongoDB 🎓📥
+Project 11 - Accounting App: C++, Qt, UML, Doxygen 🎓📥
+
+Project X : Customer Clustering ✅
+
+Project Y : Costumer Churn : Python, Pytorch. ✅
 
