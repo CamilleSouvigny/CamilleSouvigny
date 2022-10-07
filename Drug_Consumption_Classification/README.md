@@ -1,24 +1,15 @@
-# Data-Science-Portfolio
+# Drug Consumption study
 
-Repository containing portfolio of data science projects completed for academic, self learning, and professional purposes. Presented in the form of Jupyter Notebooks.
+This machine learning academic project is a study of the consumption frequency of 18 drugs with psychological tests for two thousands medical patients. 
+The goal is to detect clusters of drugs with similar consumption patterns and to predict drugs clusters most likely to be used by patients. 
 
-## About me 
+For each patient, we have its frequency of consumption for 18 drugs with seven ordered modalities (never, in last 10 years, 1 year ...). We also have personal informations (sex, age, nationality ...) and results of psychological tests.
 
-I’m a graduate computing engineer from the University of technology of Compiègne. I specialize in data science & AI.
+Project steps : 
+- Preprocessing : data cleaning, study of variable distribution and correlation. Transformation of ordered categorical variables to best fit the the distributions.
+- Search of similar drugs using clustering methods : use HAC, k-menoids in  Hamming distance and HAC, K-means methods after applying factor analysis to get a euclidean space.
 
-## Symbols 
+![image](Images_readme/clustering_results.png)
 
-✅: Project done
 
-⌛️: Project in progress (working on it right now)
-
-📌: Project to do
-
-📥: Project to upload (already done)
-
-🎓: University project
-
-## Project Content
-
-X1 : BLA BLA 1
-
+-
