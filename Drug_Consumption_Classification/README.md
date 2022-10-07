@@ -5,10 +5,10 @@ The goal is to detect clusters of drugs with similar consumption patterns and to
 
 For each patient, we have its frequency of consumption for 18 drugs with seven ordered modalities (never, in last 10 years, 1 year ...). We also have personal informations (sex, age, nationality ...) and results of psychological tests.
 
-Project steps : 
-## Preprocessing :
+## Preprocessing 
  data cleaning, study of variable distribution and correlation. Transformation of ordered categorical variables to best fit the distributions.
-## Unsupervised learning :
+
+## Unsupervised learning 
  Search of drugs with similar consumption patterns using clustering methods both using Hamming and Euclidean space. Selection of the best clusters using inertia and silhouette criterias.
 
 ![image](Images_readme/clustering_results.png)
@@ -18,12 +18,12 @@ Project steps :
 ![image](Images_readme/plot_clusters_3D.png)
 
 4 macro groups of drugs were chosen :
-    ### LSdD - Mushrooms - Legalh
-    ### Nicotine - Cannabis
-    ### Meth - VSA - Ketamine - Heroin - Crack - AMyl
-    ### Coke - Ectasy
+- LSdD - Mushrooms - Legalh
+- Nicotine - Cannabis
+- Meth - VSA - Ketamine - Heroin - Crack - AMyl
+- Coke - Ectasy
 
-## Dimensionality reduction :
+## Dimensionality reduction 
  Apply PCA to reduce the number of predictors in the dataset.
 
 ![image](Images_readme/PCA.png)
