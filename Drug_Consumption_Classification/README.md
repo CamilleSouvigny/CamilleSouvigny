@@ -23,6 +23,8 @@ Project steps :
 
 - Apply PCA to reduce the dimensionality of the dataset.
 
+![image](Images_readme/PCA.png)
+
 From 11 axis we can keep the first 9 that explain 94% of the dataset variability.
 
 - Apply classification for each of those 4 groups of drugs. Each individual can be classified in 1 or more of these drugs clusters. 
