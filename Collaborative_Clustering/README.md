@@ -1,5 +1,32 @@
 # Customer Segmentation using clustering methods
 
+## Netflix Teen Comedy Case Study
+
+
+Netflix is launching an new comedy teen movie and wants to understand the market audience for finance and marketing purposes (Media budget, CRM strategy ...).
+The analysis scope is subscibers that watched at least 1 comedy teen movie (TC) in the last 3 years.  
+
+I simulated viewing behaviours for 10k subscribers :
+
+SUBSCRIBER_ID, # User_ID
+SENIORITY_IN_TC, # Number of days since first TC watched
+RECENCY_IN_TC, # Number of days since last TC watched
+NB_TC_WATCHED, # Number of TC watched to the end
+TC_CUMULATED_HOURS, # Number of hours spent watching TC
+NB_DAYS_WATCH_TC, # Number of days where some TC were watched 
+AVG_TC_NB_DAYS_FROM_LAUNCHED, # Avg number of days after release to watch TC
+MIN_TC_NB_DAYS_FROM_LAUNCHED, # Min number of days after release to watch TC
+MAX_TC_NB_DAYS_FROM_LAUNCHED, # Max number of days after release to watch TC
+SENIORITY_NETFLIX, # Number of days since subscription
+RECENCY_NETFLIX, # Number of days since last film watched
+NB_MOVIES, # Number of films watched to the end
+NB_GENRE, # Number of different genre watched 
+NB_HOURS, # Number of hours spent watching films 
+NB_DAYS_WATCH_ALL, # Number of days where some films were watched  
+TC_ALL_HOUR_RATIO, # Hour ratio of TC films watched compared to all films
+TC_ALL_HOUR_RATIO_LAST_6_MONTHS, # Hour ratio of TC films watched compared to all films in the last 6 months
+
+
 ## Customer Segmentation
 
 Customer Segmentation is the subdivision of a market into discrete customer groups that share similar characteristics. Segmentationg enables to understand different costumer profiles, see which audiences are our key target. Segmentation both supports finance purposes (amount of effort to implement) and marketing purpose (who, when and how to target).
