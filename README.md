@@ -1,10 +1,10 @@
 # Data-Science-Portfolio
 
-Repository containing portfolio of data science projects completed for academic, self learning, and professional purposes. Presented in the form of Jupyter Notebooks.
-
-## About me 
+Repository containing portfolio of data science projects completed for academic, self learning, and professional purposes. 
 
 I’m a graduate computing engineer from the University of technology of Compiègne (Sorbonnes University). I specialize in data science & AI.
+
+Following project have been done in Python, R, Java and C++. 
 
 ## Symbols 
 
