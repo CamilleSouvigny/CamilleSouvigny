@@ -13,7 +13,7 @@ To find out what is in a room we can send two types of arrows: safe arrows and c
 
 ## World mapping
 
-The first step is to feed a SAT solver with the rules of the game (function definitionregles). Then I implemented a strategy to map all the wumpus world with limited money ressources (cannot use cautious arrows on every rooms). 
+The first step is to feed a Gophersat, a SAT and pseudo-boolean solver written purely in Go, with the rules of the game (function definitionregles). Then I implemented a strategy to map all the wumpus world with limited money ressources (cannot use cautious arrows on every rooms). 
 At each step, the function cartographier(ww,gs,size=4) tries to send safe arrows on each rooms that are considered safe by the SAT solver. When nothing is safe anymore, 1 cautious arrow is sent and the result is feeded to the SAT solver. 
 
 ## Shortest Path to gold
