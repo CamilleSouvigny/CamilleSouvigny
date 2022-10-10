@@ -4,7 +4,7 @@ Repository containing portfolio of data science projects completed for academic,
 
 I’m a graduate computing engineer from the University of technology of Compiègne (Sorbonnes University). I specialize in data science & AI.
 
-Following project have been done in Python, R, Java and C++. 
+Following projects have been done in Python, R, Java and C++. 
 
 ## Symbols 
 
