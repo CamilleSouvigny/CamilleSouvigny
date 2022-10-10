@@ -4,7 +4,7 @@ Repository containing portfolio of data science projects completed for academic,
 
 ## About me 
 
-I’m a graduate computing engineer from the University of technology of Compiègne. I specialize in data science & AI.
+I’m a graduate computing engineer from the University of technology of Compiègne (Sorbonnes University). I specialize in data science & AI.
 
 ## Symbols 
 
@@ -24,10 +24,14 @@ Project 1 : Detection of drug consumption habits : Python 🎓✅
 
 Project 2 : Wumpus Game Solver: Python, Gophersat 🎓✅
 
-Project 9 - Database for an Online Payment App: SQL, Neo4J, MongoDB 🎓📥
-Project 11 - Accounting App: C++, Qt, UML, Doxygen 🎓📥
+Project 3 : Customer Clustering ✅
 
-Project X : Customer Clustering ✅
+Project 4 : Costumer Churn : Python, Pytorch. ✅
 
-Project Y : Costumer Churn : Python, Pytorch. ✅
+Project 5 : Fake News Detection : Jade, Java. 🎓📥
+
+Project 6 - Database for an Online Payment App: SQL, Neo4J, MongoDB 🎓📥
+
+Project 7 - Accounting App: C++, Qt, UML, Doxygen 🎓📥
+
 
