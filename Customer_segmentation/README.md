@@ -1,6 +1,6 @@
 # Customer Segmentation using clustering methods
 
-## Streaming platform Teen Comedy Case Study
+## Streaming platform Teen Comedy release Case Study
 
 
 A streaming platform is releasing an new comedy teen movie and wants to understand the market audience for finance and marketing purposes (Media budget, CRM strategy ...).

@@ -84,16 +84,16 @@ for (el in SENIORITY_IN_TC) {
 }
 
 RECENCY_IN_TC <- as.numeric(RECENCY_IN_TC)
-NB_TC_WATCHED <- round((SENIORITY_IN_TC - RECENCY_IN_TC)* abs(rnorm(size))/10 ) + 1
+NB_TC_WATCHED <- round((as.numeric(SENIORITY_IN_TC) - as.numeric(RECENCY_IN_TC))* abs(rnorm(size))/10 ) + 1
 NB_DAYS_WATCH_TC <- round(NB_TC_WATCHED * rtnorm(size, lower=0.7, upper=2.2, mean=1, sd=0.2))
 TC_CUMULATED_HOURS <- round(NB_TC_WATCHED*2 + NB_TC_WATCHED* rtnorm(size, lower=-1, upper=1, mean=0, sd=0.1))  
-  
-AVG_TC_NB_DAYS_FROM_LAUNCHED <- round(rtnorm(size, mean = 50 ,sd = 100, lower=1))
-MIN_TC_NB_DAYS_FROM_LAUNCHED <- round(AVG_TC_NB_DAYS_FROM_LAUNCHED - AVG_TC_NB_DAYS_FROM_LAUNCHED* rtnorm(size, mean=0, sd=0.25, lower=0, upper=1) + 1)
-MAX_TC_NB_DAYS_FROM_LAUNCHED <- round(AVG_TC_NB_DAYS_FROM_LAUNCHED + AVG_TC_NB_DAYS_FROM_LAUNCHED* rtnorm(size, mean=0, sd=0.25, lower=0, upper=1))
+
+AVG_TC_NB_DAYS_FROM_LAUNCHED <- round(rtnorm(size, mean = 50 ,sd = 40, lower=1))
+MIN_TC_NB_DAYS_FROM_LAUNCHED <- round(AVG_TC_NB_DAYS_FROM_LAUNCHED - AVG_TC_NB_DAYS_FROM_LAUNCHED* rtnorm(10000, mean=0, sd= 0.25, lower=0, upper=1) + 1)
+MAX_TC_NB_DAYS_FROM_LAUNCHED <- round(AVG_TC_NB_DAYS_FROM_LAUNCHED + AVG_TC_NB_DAYS_FROM_LAUNCHED* rtnorm(10000, mean=0, sd= 0.25, lower=0, upper=1))
 
 NB_MOVIES <- NB_TC_WATCHED + round(rtnorm(size, mean = 20 ,sd = 15, lower=1))
-NB_GENRE <- runif(n = size, min = 1 , max = 10 )
+NB_GENRE <- round(NB_MOVIES / runif(n = size, min = 1 , max = 10 ))
 NB_HOURS <- round(NB_MOVIES*2.5 + NB_MOVIES * rtnorm(size, lower=-1, upper=1, mean=0, sd=0.5))
 
 NB_DAYS_WATCH_ALL <- round(NB_MOVIES * rtnorm(size, 1, lower=0.7, upper=2.2))
@@ -138,8 +138,8 @@ PCA_output$contrib
 fviz_pca_var(PCA_output,
              col.var = "contrib",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
-             repel = TRUE)
-
+             repel = TRUE
+)
 fviz_pca_var(PCA_output,
              col.var = "contrib", 
              repel = TRUE, axes=c(1, 2))
@@ -557,7 +557,8 @@ for (i in 2:15){
 plot(unlist(rsq_cm))
 plot(unlist(sils_cm))
 
-cutree(cah_cm,k=6)
+6
+cutree(cah_cm,k=6i)
 
 
 
