@@ -65,7 +65,7 @@ library(msm)
 
 ############################# Data Simulation #################################
 
-size = 10000
+size = 100000
 SUBSCRIBER_ID <- sample(1:size)
 SENIORITY_PLATFORM <- round(runif(n = size, min = 1 , max = 1500 ))
 SENIORITY_IN_TC <- list()
