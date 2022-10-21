@@ -37,3 +37,5 @@ Each traditional clustering methods present both weaknesses and strengths. There
 K-means, the most popular algorithm, is the best to find well-rounded compact clusters. It fails to recognise different shapes of clusters.
 
 ![image](Data/ensemble_clustering_schema.png)
+
+Ensemble clustering combines clusters through a consensus matrix and regroups individuals that are most often clustered together. It recognises various shapes of clusters.
