@@ -1,7 +1,4 @@
-# Goodness of clustering with the silhouette coefficient (on a subset. Can't calculate Dist on all data. to heavy)
-# for each obs calculate avg dissimilarity with all other points in the same cluster i belongs to. (Di)
-# than calculate dissimilatity with all other cluster points and get the lower dissimilarity (Ci).  
-#     => Si = (Ci-Di)/max(Di,Ci) => if >0 obs is well clustered.
+############################# LIBRARY IMPORTS  ############################# 
 
 install.packages(c("FactoMineR","factoextra"
 ,"Factoshiny","datasets"
@@ -24,7 +21,6 @@ install.packages(c("FactoMineR","factoextra"
 ,"tidyr","clustree"
 ,"rpud", "msm"))
 
-############################# LIBRARY IMPORTS  ############################# 
 library(FactoMineR)
 library(factoextra)
 library(Factoshiny)
