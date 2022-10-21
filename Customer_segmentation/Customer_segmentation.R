@@ -3,6 +3,27 @@
 # than calculate dissimilatity with all other cluster points and get the lower dissimilarity (Ci).  
 #     => Si = (Ci-Di)/max(Di,Ci) => if >0 obs is well clustered.
 
+install.packages(c("FactoMineR","factoextra"
+,"Factoshiny","datasets"
+,"stats","discoveR"
+,"RODBC","corrplot"
+,"fpc)","doBy"
+,"xlsx","plyr"
+,"dplyr","data.table"
+,"jsonlite","factoextra"
+,"corrplot","readr"
+,"kohonen","cluster"
+,"FactoMineR","ClustOfVar"
+,"PCAmixdata","StatMatch"
+,"corrplot","Factoshiny"
+,"scorecard","ClusterR"
+,"dplyr","ggplot2"
+,"Rmixmod","dbscan"
+,"fpc","mclust"
+,"dendextend","magrittr"
+,"tidyr","clustree"
+,"rpud", "msm"))
+
 ############################# LIBRARY IMPORTS  ############################# 
 library(FactoMineR)
 library(factoextra)
@@ -43,84 +64,65 @@ library(magrittr)
 library(tidyr)
 library(clustree)
 library(rpud)     
+library(msm)
 
-############################# function : kmeans customised  #################################
 
-kmeans_custo <- function (data, krange, k = NULL, scaling = FALSE, runs = 1, criterion = "ch", ...) {
-  if (!is.null(k)) {
-    krange <- k
-  }
-  if (!identical(scaling, FALSE)) {
-    sdata <- scale(data, center = TRUE, scale = scaling)
-  } else {
-    sdata <- data
-  }
-  c1 <- kmeansruns(sdata, krange, runs = runs, criterion = criterion, iter.max=500, algorithm="MacQueen", ...)
-  partition <- c1$cluster
-  cl <- list()
-  nc <- c1$bestk
-  for (i in 1:nc) {
-    cl[[i]] <- partition == i
-    out <- list(result = c1, nc = nc, clusterlist = cl, partition = partition, 
-                clustermethod = "kmeans")
-  }
-  out
+############################# Data Simulation #################################
+
+size = 10000
+SUBSCRIBER_ID <- sample(1:size)
+SENIORITY_PLATFORM <- round(runif(n = size, min = 1 , max = 1500 ))
+SENIORITY_IN_TC <- list()
+for (el in SENIORITY_PLATFORM) {
+  SENIORITY_IN_TC <- append(SENIORITY_IN_TC , el - round(runif(n = 1, min = 1 , max = el )* 0.5))
+}
+SENIORITY_IN_TC <- as.numeric(SENIORITY_IN_TC)
+
+RECENCY_IN_TC <- list()
+for (el in SENIORITY_IN_TC) {
+  RECENCY_IN_TC <- append(RECENCY_IN_TC, round(runif(n = 1, min = 1 , max = el )))
 }
 
+RECENCY_IN_TC <- as.numeric(RECENCY_IN_TC)
+NB_TC_WATCHED <- round((as.numeric(SENIORITY_IN_TC) - as.numeric(RECENCY_IN_TC))* abs(rnorm(size))/10 ) + 1
+NB_DAYS_WATCH_TC <- round(NB_TC_WATCHED * rtnorm(size, lower=0.7, upper=2.2, mean=1, sd=0.2))
+TC_CUMULATED_HOURS <- round(NB_TC_WATCHED*2 + NB_TC_WATCHED* rtnorm(size, lower=-1, upper=1, mean=0, sd=0.1))  
 
-############################# Data Import #################################
+AVG_TC_NB_DAYS_FROM_LAUNCHED <- round(rtnorm(size, mean = 50 ,sd = 40, lower=1))
+MIN_TC_NB_DAYS_FROM_LAUNCHED <- round(AVG_TC_NB_DAYS_FROM_LAUNCHED - AVG_TC_NB_DAYS_FROM_LAUNCHED* rtnorm(10000, mean=0, sd= 0.25, lower=0, upper=1) + 1)
+MAX_TC_NB_DAYS_FROM_LAUNCHED <- round(AVG_TC_NB_DAYS_FROM_LAUNCHED + AVG_TC_NB_DAYS_FROM_LAUNCHED* rtnorm(10000, mean=0, sd= 0.25, lower=0, upper=1))
+
+NB_MOVIES <- NB_TC_WATCHED + round(rtnorm(size, mean = 20 ,sd = 15, lower=1))
+NB_GENRE <- round(NB_MOVIES / runif(n = size, min = 1 , max = 10 ))
+NB_HOURS <- round(NB_MOVIES*2.5 + NB_MOVIES * rtnorm(size, lower=-1, upper=1, mean=0, sd=0.5))
+
+NB_DAYS_WATCH_ALL <- round(NB_MOVIES * rtnorm(size, 1, lower=0.7, upper=2.2))
+TC_ALL_HOUR_RATIO <- TC_CUMULATED_HOURS/NB_HOURS
+TC_ALL_HOUR_RATIO_LAST_6_MONTHS <- TC_ALL_HOUR_RATIO + TC_ALL_HOUR_RATIO*rtnorm(size, lower=-1, upper=1, mean=0, sd=0.2)
+
+  
+#hist(rtnorm(size, mean = 40 ,sd = 40, lower=1))
+#curve(pnorm(x, mean=10, sd=15), from = 0, to = 100) 
+#sample(x=0.2:4, size, replace = TRUE, prob = pnorm(size))
 
 
-#D2P : SANDBOX.EMEA_ANALYTICS_CRM_PRIVATE.NTT_STORE_CLUSTERING_DATASET_FINAL_PC
+data <- cbind(SUBSCRIBER_ID, SENIORITY_PLATFORM, SENIORITY_IN_TC, RECENCY_IN_TC, 
+              NB_TC_WATCHED, NB_DAYS_WATCH_TC, TC_CUMULATED_HOURS, AVG_TC_NB_DAYS_FROM_LAUNCHED,
+              MIN_TC_NB_DAYS_FROM_LAUNCHED, MAX_TC_NB_DAYS_FROM_LAUNCHED, NB_MOVIES,
+              NB_GENRE, NB_HOURS, NB_DAYS_WATCH_ALL, TC_ALL_HOUR_RATIO, TC_ALL_HOUR_RATIO_LAST_6_MONTHS)
 
-#AC : SANDBOX.EMEA_ANALYTICS_CRM_PRIVATE.PM_AC_CLUSTERING_2022_P2_PLAYERS_DATA
-
-
-myconn <- DBI::dbConnect(odbc::odbc(), "SNK_R", PRIV_KEY_FILE="C:/Users/csouvigny/Documents/rsa_key/rsa_key.p8",
-                         PRIV_KEY_FILE_PWD ='2B@XS5E&!5%UCab')
-
-
-data <- DBI::dbGetQuery(myconn,"SELECT USER_KEY,
-                              SENIORITY_JD as SENIORITY_IN_BRAND,LIFETIME_JD as LIFETIME_IN_BRAND , IS_FIRST_BRAND, JD_PLAYTIME as PLAYTIME,
-                               NB_JDS as NB_GAMES_IN_BRAND, SESSIONS_JD as SESSION_DAYS_IN_BRAND,
-                               LAST_ACTION_JD_DIFF as RECENCY_BRAND,LAST_ACTION_DIFF as RECENCY_UBI , NB_GAMES,SESSION_DAYS,
-                               FIRST_JD_SESSIONS as FIRST_GAME_IN_BRAND_SESSION , LAST_JD_SESSIONS as LAST_GAME_IN_BRAND_SESSION, FIRST_JD_CONVERSION as FIRST_GAME_IN_BRAND_ACQ_DELAY
-                               , LAST_JD_CONVERSION as LAST_GAME_IN_BRAND_ACQ_DELAY, IS_MAX_PLAYED_BRAND
-                          FROM SANDBOX.EMEA_ANALYTICS_CRM_PRIVATE.CS_JD_POPULATION sample(0.01) ;")
-
-head(data[-1])
+############################# Cleaning check ###################
+head(data)
 summary(data)
-
 gc()
 
-Dataset_Clustering = data
-Dataset_Clustering[is.na(Dataset_Clustering)] <- 0
-Dataset_Clustering[Dataset_Clustering<0] <- 0
-
-summary(Dataset_Clustering)
-
-## Convert to log on certain variables (and rounding them)  - log on skewed and without limit variable (cf FG_DAYS_PLAYED is limited but not currency bought)
-list_to_log = c(
-  'SENIORITY_AC'
-  , 'SENIORITY'
-  #, 'PLAYED_DAYS_UBI'
-  , 'RECENCY_AC'
-  # , 'UBI_RECENCY'
-  , 'LIF '
-)
-
-for (i in list_to_log) 
-{
-  Dataset_Clustering[[i]] = log(Dataset_Clustering[[i]]+1)
-  Dataset_Clustering[[i]] = round(Dataset_Clustering[[i]],6)
-}
-
-df<- sample(1:nrow(Dataset_Clustering), 4000000)
-Dataset_Clustering<-Dataset_Clustering[df,]
+#Dataset_Clustering = data
+#Dataset_Clustering[is.na(Dataset_Clustering)] <- 0
+#Dataset_Clustering[Dataset_Clustering<0] <- 0
+#summary(Dataset_Clustering)
 
 ####################### PCA  ###################################  
-
-PCA_output = prcomp(Dataset_Clustering[-c(1)], scale = TRUE)
+PCA_output = prcomp(data[,-1], scale = TRUE)
 
 # Choose nb of axis depending on cumulative variance explained and axis contribution
 summary(PCA_output)
@@ -148,12 +150,34 @@ corrplot(get_pca_var(PCA_output)$contrib, is.corr=FALSE)
 
 fviz_contrib(PCA_output, choice = "var", axes = 1, top = 10)
 
-datacp <- as.data.frame(PCA_output$x[,  1:7])
+datacp <- as.data.frame(PCA_output$x[,  1:4])
 
 
 datacp_matrix <- as.matrix(datacp)
 dist_acp <- dist(datacp_matrix, method = "euclidean")
 
+############################# function : kmeans customised  #################################
+
+kmeans_custo <- function (data, krange, k = NULL, scaling = FALSE, runs = 1, criterion = "ch", ...) {
+  if (!is.null(k)) {
+    krange <- k
+  }
+  if (!identical(scaling, FALSE)) {
+    sdata <- scale(data, center = TRUE, scale = scaling)
+  } else {
+    sdata <- data
+  }
+  c1 <- kmeansruns(sdata, krange, runs = runs, criterion = criterion, iter.max=500, algorithm="MacQueen", ...)
+  partition <- c1$cluster
+  cl <- list()
+  nc <- c1$bestk
+  for (i in 1:nc) {
+    cl[[i]] <- partition == i
+    out <- list(result = c1, nc = nc, clusterlist = cl, partition = partition, 
+                clustermethod = "kmeans")
+  }
+  out
+}
 
 ####################### Square error partitional  ###################################  
 ##################################  K-MEANS    #######################################
@@ -162,8 +186,6 @@ kms <- vector("list",10)
 for (i in 4:12) kms[[i]] <-  clusterboot(datacp, B=150, bootmethod="boot",
                                                   clustermethod=kmeans_custo,
                                                   krange=i, seed=10)
-
-## stability K=6 / K=9 
 
 nbclust = 9
 km.boot_simple9 = clusterboot(datacp, B=50, bootmethod="boot",

@@ -1,15 +1,16 @@
 # Customer Segmentation using clustering methods
 
-## Netflix Teen Comedy Case Study
+## Streaming platform Teen Comedy Case Study
 
 
-Netflix is releasing an new comedy teen movie and wants to understand the market audience for finance and marketing purposes (Media budget, CRM strategy ...).
+A streaming platform is releasing an new comedy teen movie and wants to understand the market audience for finance and marketing purposes (Media budget, CRM strategy ...).
 The analysis scope is subscibers that watched at least 1 comedy teen movie (TC) in the last 3 years.  
 
 I simulated viewing behaviours for 10k subscribers :
 
 - SUBSCRIBER_ID, # User_ID
 - SENIORITY_IN_TC, # Number of days since first TC watched
+- SENIORITY_PLATFORM # Number of days since subscription 
 - RECENCY_IN_TC, # Number of days since last TC watched
 - NB_TC_WATCHED, # Number of TC watched to the end
 - TC_CUMULATED_HOURS, # Number of hours spent watching TC
@@ -17,8 +18,6 @@ I simulated viewing behaviours for 10k subscribers :
 - AVG_TC_NB_DAYS_FROM_LAUNCHED, # Avg number of days after release to watch TC
 - MIN_TC_NB_DAYS_FROM_LAUNCHED, # Min number of days after release to watch TC
 - MAX_TC_NB_DAYS_FROM_LAUNCHED, # Max number of days after release to watch TC
-- SENIORITY_NETFLIX, # Number of days since subscription
-- RECENCY_NETFLIX, # Number of days since last film watched
 - NB_MOVIES, # Number of films watched to the end
 - NB_GENRE, # Number of different genre watched 
 - NB_HOURS, # Number of hours spent watching films 
