@@ -1,12 +1,11 @@
-# Customer Segmentation using clustering methods
+# Customer Segmentation using unsepervised learning
 
 ## Streaming platform Teen Comedy release Case Study
 
+A streaming platform is releasing an new comedy teen movie and wants to understand the market audience for finance and marketing purposes (Media budget, CRM/marketing strategy ...).
+The analysis scope concerns subscibers that watched at least 1 comedy teen movie (TC) in the last 3 years.  
 
-A streaming platform is releasing an new comedy teen movie and wants to understand the market audience for finance and marketing purposes (Media budget, CRM strategy ...).
-The analysis scope is subscibers that watched at least 1 comedy teen movie (TC) in the last 3 years.  
-
-I simulated viewing behaviours for 10k subscribers :
+I simulated viewing behaviours for 100k subscribers :
 
 - SUBSCRIBER_ID, # User_ID
 - SENIORITY_IN_TC, # Number of days since first TC watched
@@ -39,3 +38,24 @@ K-means, the most popular algorithm, is the best to find well-rounded compact cl
 ![image](Data/ensemble_clustering_schema.png)
 
 Ensemble clustering combines clusters through a consensus matrix and regroups individuals that are most often clustered together. It recognises various shapes of clusters.
+
+## Clustering results 
+
+### PCA
+
+<img src="Visualisation/PCA_variance_explained.png" width="400"/> <img src="Visualisation/PCA_axis1_contribution.png" width="400"/> 
+
+The 7 first PCA axis explain more than 90% of the dataset variance. First axis explains 40% of data variability with nr of TC, nr of TC hours and nr of days spent to watch TC.
+
+### Partitional clustering 
+
+<img src="Visualisation/Kmeans_wss_elbow.png" width="400"/> <img src="Visualisation/Kmeans_cluster_trees.png" width="400"/>
+<img src="Visualisation/Kmeans7_cluster_plot.png" width="400"/> 
+
+Kmeans with 7 clusters have the highest stability (over 70% for each clusters).
+Kmedoids with X clusters 
+
+### Density clustering
+### Hierarchical clustering
+
+### Collaborative clustering

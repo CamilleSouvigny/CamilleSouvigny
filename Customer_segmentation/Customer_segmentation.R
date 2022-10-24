@@ -65,7 +65,7 @@ library(msm)
 
 ############################# Data Simulation #################################
 
-size = 100000
+size = 10000
 SUBSCRIBER_ID <- sample(1:size)
 SENIORITY_PLATFORM <- round(runif(n = size, min = 1 , max = 1500 ))
 SENIORITY_IN_TC <- list()
@@ -81,20 +81,20 @@ for (el in SENIORITY_IN_TC) {
 
 RECENCY_IN_TC <- as.numeric(RECENCY_IN_TC)
 NB_TC_WATCHED <- round((SENIORITY_IN_TC - RECENCY_IN_TC)* abs(rnorm(size))/10 ) + 1
-NB_DAYS_WATCH_TC <- round(NB_TC_WATCHED * rtnorm(size, lower=0.7, upper=2.2, mean=1, sd=0.2))
-TC_CUMULATED_HOURS <- round(NB_TC_WATCHED*2 + NB_TC_WATCHED* rtnorm(size, lower=-1, upper=1, mean=0, sd=0.1))  
+NB_DAYS_WATCH_TC <- round(NB_TC_WATCHED * rtnorm(size, lower=0.7, upper=2.2, mean=1, sd=0.7))
+TC_CUMULATED_HOURS <- round(NB_TC_WATCHED*2 + NB_TC_WATCHED* rtnorm(size, lower=-1, upper=1, mean=0, sd=1))  
   
 AVG_TC_NB_DAYS_FROM_LAUNCHED <- round(rtnorm(size, mean = 50 ,sd = 100, lower=1))
-MIN_TC_NB_DAYS_FROM_LAUNCHED <- round(AVG_TC_NB_DAYS_FROM_LAUNCHED - AVG_TC_NB_DAYS_FROM_LAUNCHED* rtnorm(size, mean=0, sd=0.25, lower=0, upper=1) + 1)
-MAX_TC_NB_DAYS_FROM_LAUNCHED <- round(AVG_TC_NB_DAYS_FROM_LAUNCHED + AVG_TC_NB_DAYS_FROM_LAUNCHED* rtnorm(size, mean=0, sd=0.25, lower=0, upper=1))
+MIN_TC_NB_DAYS_FROM_LAUNCHED <- round(AVG_TC_NB_DAYS_FROM_LAUNCHED - AVG_TC_NB_DAYS_FROM_LAUNCHED* rtnorm(size, mean=0, sd=0.5, lower=0, upper=1) + 1)
+MAX_TC_NB_DAYS_FROM_LAUNCHED <- round(AVG_TC_NB_DAYS_FROM_LAUNCHED + AVG_TC_NB_DAYS_FROM_LAUNCHED* rtnorm(size, mean=0, sd=0.5, lower=0, upper=1))
 
-NB_MOVIES <- NB_TC_WATCHED + round(rtnorm(size, mean = 20 ,sd = 15, lower=1))
+NB_MOVIES <- NB_TC_WATCHED + round(rtnorm(size, mean = 20 ,sd = 20, lower=1))
 NB_GENRE <- runif(n = size, min = 1 , max = 10 )
-NB_HOURS <- round(NB_MOVIES*2.5 + NB_MOVIES * rtnorm(size, lower=-1, upper=1, mean=0, sd=0.5))
+NB_HOURS <- round(NB_MOVIES*2.5 + NB_MOVIES * rtnorm(size, lower=-1, upper=1, mean=0, sd=1))
 
 NB_DAYS_WATCH_ALL <- round(NB_MOVIES * rtnorm(size, 1, lower=0.7, upper=2.2))
 TC_ALL_HOUR_RATIO <- TC_CUMULATED_HOURS/NB_HOURS
-TC_ALL_HOUR_RATIO_LAST_6_MONTHS <- TC_ALL_HOUR_RATIO + TC_ALL_HOUR_RATIO*rtnorm(size, lower=-1, upper=1, mean=0, sd=0.2)
+TC_ALL_HOUR_RATIO_LAST_6_MONTHS <- TC_ALL_HOUR_RATIO + TC_ALL_HOUR_RATIO*rtnorm(size, lower=-1, upper=1, mean=0, sd=1)
 
   
 #hist(rtnorm(size, mean = 40 ,sd = 40, lower=1))
@@ -122,7 +122,7 @@ PCA_output = prcomp(data[,-1], scale = TRUE)
 
 # Choose nb of axis depending on cumulative variance explained and axis contribution
 summary(PCA_output)
-plot(PCA_output)
+
 
 fviz_eig(PCA_output)
 get_eigenvalue(PCA_output)
@@ -138,18 +138,15 @@ fviz_pca_var(PCA_output,
 
 fviz_pca_var(PCA_output,
              col.var = "contrib", 
-             repel = TRUE, axes=c(1, 2))
+             repel = TRUE, axes=c(3,4))
 
 corrplot(get_pca_var(PCA_output)$cos2, is.corr=FALSE)
 corrplot(get_pca_var(PCA_output)$contrib, is.corr=FALSE)
 
 fviz_contrib(PCA_output, choice = "var", axes = 1, top = 10)
 
-datacp <- as.data.frame(PCA_output$x[,  1:4])
-
-
-datacp_matrix <- as.matrix(datacp)
-dist_acp <- dist(datacp_matrix, method = "euclidean")
+datacp <- as.data.frame(PCA_output$x[,  1:7])
+dist_acp <- dist(as.matrix(datacp), method = "euclidean")
 
 ############################# function : kmeans customised  #################################
 
@@ -178,23 +175,24 @@ kmeans_custo <- function (data, krange, k = NULL, scaling = FALSE, runs = 1, cri
 ##################################  K-MEANS    #######################################
 
 kms <- vector("list",10)
-for (i in 4:12) kms[[i]] <-  clusterboot(datacp, B=150, bootmethod="boot",
+for (i in 6:10) kms[[i]] <-  clusterboot(datacp, B=150, bootmethod="boot",
                                                   clustermethod=kmeans_custo,
                                                   krange=i, seed=10)
+kms[[7]]$bootmean # Most stable nr of centers
 
-nbclust = 9
-km.boot_simple9 = clusterboot(datacp, B=50, bootmethod="boot",
+nbclust = 7
+km.boot_simple = clusterboot(datacp, B=150, bootmethod="boot",
                               clustermethod=kmeans_custo,
                               krange=nbclust, seed=15555)  
 
-km.boot_simple9$bootmean ; km.boot_simple9$result$result ;km.boot_simple9$result$result$size*100/nrow(datacp)
+km.boot_simple$bootmean ; km.boot_simple$result$result ;km.boot_simple$result$result$size*100/nrow(datacp)
 
-km9=kmeans(datacp , centers=km.boot_simple9$result$result$centers)
+km7=kmeans(datacp , centers=km.boot_simple$result$result$centers)
 
-kmeans9_stat = cluster.stats(dist_acp, km.boot_simple9$result$result$cluster)
-kmeans9_stat[c("wb.ratio","within.cluster.ss","avg.silwidth","clus.avg.silwidths")]
+kmeans7_stat = cluster.stats(dist_acp, km.boot_simple$result$result$cluster)
+kmeans7_stat[c("wb.ratio","within.cluster.ss","avg.silwidth","clus.avg.silwidths")]
 
-fviz_cluster(km9, data = datacp, stand = FALSE,
+fviz_cluster(km7, data = datacp, stand = FALSE,
              ellipse = FALSE, show.clust.cent = TRUE,
              geom = "point",palette = "jco", ggtheme = theme_classic())
 
@@ -203,10 +201,10 @@ fviz_cluster(km9, data = datacp, stand = FALSE,
 # CHOOSE K by viewing different metrics
 
 #  within sum of squares
-fviz_nbclust(datacp, kmeans, method = "wss", k.max = 24) + theme_minimal() + ggtitle("the Elbow Method")     # K around 7 
+fviz_nbclust(datacp, kmeans, method = "wss", k.max = 24) + theme_minimal() + ggtitle("the Elbow Method")     
 
 # Silhouette
-fviz_nbclust(datacp, kmeans, method = "silhouette", k.max = 10) + theme_minimal() + ggtitle("The Silhouette Plot") # k =2 than k=7
+fviz_nbclust(datacp, kmeans, method = "silhouette", k.max = 15) + theme_minimal() + ggtitle("The Silhouette Plot") 
 
 # Gap statistic
 gap_stat <- clusGap(datacp, FUN = kmeans, nstart = 30, K.max = 24, B = 50)
@@ -222,18 +220,24 @@ km7 <- kmeans(datacp, 7)
 km8 <- kmeans(datacp, 8)
 km9 <- kmeans(datacp, 9)
 km10 <- kmeans(datacp, 10)
-all_km=list(km1, km2, km3, km4, km5, km6, km7, km8, km9, km10)
+km11 <- kmeans(datacp, 11)
+km12 <- kmeans(datacp, 12)
+km13 <- kmeans(datacp, 13)
+km14 <- kmeans(datacp, 14)
+km15 <- kmeans(datacp, 15)
+km16 <- kmeans(datacp, 16)
+all_km=list(km1, km2, km3, km4, km5, km6, km7, km8, km9, km10, km11, km12, km13, km14, km15, km16)
 
 ssc <- data.frame(
-  kmeans = c(2,3,4,5,6,7,8,9,10),
-  within_ss = c(mean(km2$withinss), mean(km3$withinss), mean(km4$withinss), mean(km5$withinss), mean(km6$withinss), mean(km7$withinss), mean(km8$withinss),mean(km9$withinss),mean(km10$withinss)),
-  between_ss = c(km2$betweenss, km3$betweenss, km4$betweenss, km5$betweenss, km6$betweenss, km7$betweenss, km8$betweenss, km9$betweenss, km10$betweenss)
+  kmeans = c(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16),
+  within_ss = c(mean(km2$withinss), mean(km3$withinss), mean(km4$withinss), mean(km5$withinss), mean(km6$withinss), mean(km7$withinss), mean(km8$withinss),mean(km9$withinss),mean(km10$withinss),mean(km11$withinss),mean(km12$withinss),mean(km13$withinss),mean(km14$withinss),mean(km15$withinss),mean(km16$withinss)),
+  between_ss = c(km2$betweenss, km3$betweenss, km4$betweenss, km5$betweenss, km6$betweenss, km7$betweenss, km8$betweenss, km9$betweenss, km10$betweenss, km11$betweenss, km12$betweenss, km13$betweenss, km14$betweenss, km15$betweenss, km16$betweenss)
 )
 # Look for best wss / bss 
 ssc %<>% gather(., key = "measurement", value = value, -kmeans)
 ssc %>% ggplot(., aes(x=kmeans, y=value, fill = measurement)) + geom_bar(stat = "identity", position = "dodge") + ggtitle("Cluster Model Comparison") + xlab("Number of Clusters") + ylab("Log10 Total Sum of Squares") + scale_x_discrete(name = "Number of Clusters", limits = c("0", "2", "3", "4", "5", "6", "7", "8","9","10"))
 
-kmax = 10
+kmax = 16
 totwss = rep(0,kmax) 
 kmfit = list() # create and empty list
 i=0
@@ -256,17 +260,17 @@ kmeansAIC = function(fit){
   return(D + 2*m*k)
 }
 aic=sapply(all_km,kmeansAIC)
-plot(seq(1,9),aic,xlab="Number of clusters",ylab="AIC",pch=20,cex=2) # elbow method
+plot(seq(1,16),aic,xlab="Number of clusters",ylab="AIC",pch=20,cex=2) # elbow method
 
 
 
 # Clustering trees 
 tmp <- NULL
-for (k in 1:11){
+for (k in 1:14){
   tmp[k] <- kmeans(datacp, k, nstart = 5)
 }
 df <- data.frame(tmp)
-colnames(df) <- seq(1:11)
+colnames(df) <- seq(1:14)
 colnames(df) <- paste0("k",colnames(df))
 
 # get individual PCA
@@ -275,7 +279,7 @@ ind.coord <- df.pca$x
 ind.coord <- ind.coord[,1:2]
 df <- bind_cols(as.data.frame(df), as.data.frame(ind.coord))
 clustree(df, prefix = "k")
-clustree(df, prefix = "k", node_colour='sc3_stability')
+#clustree(df, prefix = "k", node_colour='sc3_stability')
 
 clustree(df, prefix = "k", layout = "sugiyama") # tries to minimize trees crossing
 
@@ -290,14 +294,11 @@ overlay_list$y_side
 
 ##################################  K-MENOID   ###########################################
 
-fviz_nbclust(datacp, pam, method = "wss", k.max = 14) + theme_minimal() + ggtitle("the Elbow Method")     # K around 7-8
+fviz_nbclust(datacp, pam, method = "wss", k.max = 14) + theme_minimal() + ggtitle("the Elbow Method")   
+fviz_nbclust(datacp, pam, method = "silhouette", k.max = 14) + theme_minimal() + ggtitle("The Silhouette Plot") 
 
-fviz_nbclust(datacp, pam, method = "silhouette", k.max = 14) + theme_minimal() + ggtitle("The Silhouette Plot") # k = 10
-
-
-kmenoids=pam(datacp, 7 , metric = 'euclidean')
+kmenoids = pam(datacp, 7 , metric = 'euclidean')
 fviz_cluster(kmenoids, data = df)
-
 
 #######################  Density functions clustering  ############################# 
 ##################################  Gaussian Mixture Modelling  #################### 
@@ -513,8 +514,7 @@ fviz_cluster(hk, palette = "jco", repel = TRUE,
 
 ############################# Collaborative clustering  ############################# 
 
-all_cl <- cbind(kmeans6 = km.boot_simple6$result$result$cluster,
-                kmeans9 = km.boot_simple9$result$result$cluster,
+all_cl <- cbind(kmeans7 = km.boot_simple$result$result$cluster,
                 kmenoids = kmenoids$clustering,
                 gmm = gm_cah3$classification,
                 gmm_gaus = density_cluster@bestResult@partition,
