@@ -22,6 +22,7 @@ Individuals subscribe to the environment agent that is responsible for news crea
 
 ## graphical representation
 
-<img src="Environment_descriptions/network.png" width="425"/> <img src="Environment_descriptions/network_legend.png" width="225"/>
+<img src="Environment_descriptions/network_legend.png" width="225"/>
+<img src="Environment_descriptions/network.png" width="425"/> 
 
  
