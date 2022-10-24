@@ -58,4 +58,4 @@ Kmedoids with X clusters
 ### Density clustering
 ### Hierarchical clustering
 
-### Collaborative clustering
+## Collaborative clustering
