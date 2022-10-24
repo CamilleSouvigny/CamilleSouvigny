@@ -35,7 +35,7 @@ Segmentation can be done by identifying key KPIs and creating decision trees to 
 Each traditional clustering methods present both weaknesses and strengths. There is not one method that proved to be efficient on all kind of dataset
 K-means, the most popular algorithm, is the best to find well-rounded compact clusters. It fails to recognise different shapes of clusters.
 
-![image](Data/ensemble_clustering_schema.png)
+![image](Visualisation/ensemble_clustering_schema.png)
 
 Ensemble clustering combines clusters through a consensus matrix and regroups individuals that are most often clustered together. It recognises various shapes of clusters.
 
@@ -43,13 +43,13 @@ Ensemble clustering combines clusters through a consensus matrix and regroups in
 
 ### PCA
 
-<img src="Visualisation/PCA_variance_explained.png" width="400"/> <img src="Visualisation/PCA_axis1_contribution.png" width="400"/> 
+<img src="Visualisation/PCA_variance_explained.png" width="300"/> <img src="Visualisation/PCA_axis1_contribution.png" width="300"/> 
 
 The 7 first PCA axis explain more than 90% of the dataset variance. First axis explains 40% of data variability with nr of TC, nr of TC hours and nr of days spent to watch TC.
 
 ### Partitional clustering 
 
-<img src="Visualisation/Kmeans_wss_elbow.png" width="400"/> <img src="Visualisation/Kmeans_cluster_trees.png" width="400"/>
+<img src="Visualisation/Kmeans_wss_elbow.png" width="300"/> <img src="Visualisation/Kmeans_cluster_trees.png" width="300"/>
 <img src="Visualisation/Kmeans7_cluster_plot.png" width="400"/> 
 
 Kmeans with 7 clusters have the highest stability (over 70% for each clusters).
