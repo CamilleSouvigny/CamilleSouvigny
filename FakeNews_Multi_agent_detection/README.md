@@ -1,6 +1,6 @@
 # Multi agent simulation to detect Fake News propagation
 
 
-## Agent interactions :
+## Agent interactions
 
 ![image](UML_Diagram.png)
