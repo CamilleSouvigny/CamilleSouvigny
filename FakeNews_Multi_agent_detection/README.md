@@ -11,4 +11,5 @@ Most of studies relating to information propagation on social network were done 
 ![image](Environment_descriptions/Environment_description.png)
 
 
-![alt-text-1](Environment_descriptions/subscribe.png "title-1") ![alt-text-2](Environment_descriptions/generate_news.png "title-2")
+<img src="Environment_descriptions/subscribe.png" width="425"/> <img src="Environment_descriptions/generate_news.png" width="425"/> 
+
