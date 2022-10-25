@@ -245,7 +245,7 @@ for (km in all_km){
   i=i+1
   totwss[i] = km$tot.withinss
 }
-rsq = 1-(totwss*(nrow(datacp)-1))/(totwss[1]*(nrow(datacp)-seq(1,kmax)))  # withinesss / total sum of squares
+rsq = 1-(totwss*(nrow(datacp)-1))/(totwss[1]*(nrow(datacp)-seq(1,kmax)))  # 1 - withinesss / total sum of squares
 plot(seq(1,kmax),rsq,xlab="Number of clusters",ylab="Adjusted R-squared",pch=20,cex=2) # look for max increase point
 
 
@@ -297,7 +297,7 @@ overlay_list$y_side
 fviz_nbclust(datacp, pam, method = "wss", k.max = 14) + theme_minimal() + ggtitle("the Elbow Method")   
 fviz_nbclust(datacp, pam, method = "silhouette", k.max = 14) + theme_minimal() + ggtitle("The Silhouette Plot") 
 
-kmenoids = pam(datacp, 7 , metric = 'euclidean')
+kmenoids = pam(datacp, 6 , metric = 'euclidean')
 fviz_cluster(kmenoids, data = df)
 
 #######################  Density functions clustering  ############################# 
@@ -316,13 +316,9 @@ gm_cah1$G
 gm_cah2$G
 gm_cah3$G
 
-gm_cah3$bic
-
 plot(gm_cl) # plots cluster on each axis combination
-
 gm_cl$modelName # selected model : VVV =  ellipsoidal, varying volume, shape, and orientation
 gm_cl$G #  7 clusters
-
 head(gm_cl$z) # probability for an observation to be in a given cluster
 summary(gm_cl, parameters = TRUE) #get probabilities, means, variances
 
@@ -348,18 +344,13 @@ gm_cl_bic
 plot(gm_cl_bic)
 
 
-
 #LRT <- mclustBootstrapLRT(datacp, modelName = "VVV" , nboot=10)
 #LRT$G
-
-
 
 #Bootstrap or jackknife estimation of standard errors and percentile bootstrap confidence intervals for the parameters of a Gaussian mixture model.
 bootClust <- MclustBootstrap(gm_cah3, nboot=20)
 summary(bootClust, what = "se")
 summary(bootClust, what = "ci")
-
-
 
 density_cluster <- mixmodCluster(datacp, nbCluster=4:10, criterion=c("BIC", "ICL", "NEC"))
 #  Gaussian_pk_Lk_C : quantitative data
@@ -514,9 +505,10 @@ fviz_cluster(hk, palette = "jco", repel = TRUE,
 
 ############################# Collaborative clustering  ############################# 
 
-all_cl <- cbind(kmeans7 = km.boot_simple$result$result$cluster,
+all_cl <- cbind(kmeans7 = km.boot_simple$result$result$cluster, #60%
                 kmenoids = kmenoids$clustering,
-                gmm = gm_cah3$classification,
+                gm = gm_cl$classification,
+                gmcah = gm_cah3$classification, 
                 gmm_gaus = density_cluster@bestResult@partition,
                 dbscan = db$cluster ,
                 hac.ward = cutree(cah.ward,k=8),
