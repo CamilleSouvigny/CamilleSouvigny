@@ -1,0 +1,358 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+enum TypeCompte <<enum>> {
+  actif
+  passif
+  recette
+  depense
+  racine
+}
+
+abstract class AbstractCompte <<Abstract>> {
+  # id : integer
+  # nom : string
+  # parent : CompteVirtuel*
+  # type : TypeCompte
+  # virtuel : bool
+  # historique* : RapprochementCareTaker*
+  __
+  .. constructeur ..
+  +AbstractCompte(const unsigned int& id, const string& nom, CompteVirtuel* parent, TypeCompte& type, bool virtuel)
+  .. getters ..
+  +getId() : int const
+  +getNom() : const string& const
+  +getParent() : CompteVirtuel& const
+  +getType() : TypeCompte& const
+  +isVirtuel() : bool const
+  +getProfondeur() const : unsigned int
+  +{abstract}getSolde() : double const
+  +{abstract}getSoldePeriode(QDate d1, QDate d2) const : void
+  .. méthodes ..
+  +{abstract}hasTransactionsRapprochees() : void
+  +{abstract}hasAllTransactionsRapprochees() : void
+  +{abstract}rapprocher() : void
+  +save() : RapprochementMemento*
+  .. signals ..
+  +changementSolde(double montant);
+}
+
+class Compte <<Concrete>> {
+ -solde : AbstractSolde*
+ -operations : vector<Operation*>
+ .. constructeur ..
+ +Compte(const unsigned int& ref, const QString& nom, const TypeCompte& type, CompteVirtuel* parent=nullptr)
+ .. getters ..
+ getIdSuivantOperation() const : unsigned int
+ operator==(const Compte& c) const : bool
+ +getOperation() : const Operation& const
+ +getOperations() : vector<Operation *>
+ +getSolde() : double const
+ +getSoldePeriode(d1 QDate ,d2: QDate) const : double
+ --methodes--
+ +ajouterOperation(op: Operation* ):void
+ +removeOperation(idOp: unsigned int):void
+ +crediter() : void
+ +debiter() : void
+ +hasTransactionsRapprochees() : void
+ +hasAllTransactionsRapprochees() : void
+ +rapprocher() : void
+}
+
+
+class CompteVirtuel <<Concrete>> {
+  - soldeCumule : double
+  - sousComptes : vector<AbstractCompte*>
+  __
+  .. constructeur ..
+  +CompteVirtuel(const unsigned int& ref, const QString& nom, const TypeCompte& t, CompteVirtuel* parent)
+  .. getters ..
+  +getSousComptes() : vector<AbstractCompte*>
+  +getSolde() : double const
+  +getSoldePeriode(d1 QDate ,d2: QDate) const : double
+
+  +getCompte(const string& nom) : AbstractCompte& const
+  +getCompte(unsigned int id) : AbstractCompte& const
+  .. methodes ..
+  +addSousCompte(const unsigned int& ref, string nom, bool virtuel)
+  +removeCompte(const unsigned int& ref, bool virtuel)
+  +calculerSolde() : void
+  +changerSolde(double montant);
+  +hasTransactionsRapprochees() : void
+ +hasAllTransactionsRapprochees() : void
+ +rapprocher() : void
+}
+
+AbstractCompte "*" --o "0..1" CompteVirtuel : contient <
+AbstractCompte <|-- Compte
+AbstractCompte <|-- CompteVirtuel
+
+abstract class Solde <<Abstract>> {
+  #montant : double
+  __
+  ..getters..
+  +getMontant() : double
+  +setMontant(s: const double&) : void
+  ..méthodes..
+  +{abstract} crediter() : void
+  +{abstract} debiter() : void
+}
+
+Compte *-down- "1" Solde : possède >
+
+class SoldeEmploi {
+  .. constructeur ..
+  +SoldeEmploi()
+  .. méthodes ..
+  +crediter(montantACrediter: const double&) : void
+  +debiter(montantADebiter : const double&) : void
+}
+
+class SoldeRessource {
+  .. constructeur ..
+  +SoldeRessource()
+  .. méthodes ..
+  +crediter(montantACrediter: const double&) : void
+  +debiter(montantADebiter : const double&) : void
+}
+
+SoldeEmploi -up-|> Solde
+SoldeRessource -up-|> Solde
+
+
+class Operation {
+  -compte : Compte *
+  -debit : unsigned double
+  -credit : unsigned double
+  -transaction :Transaction* 
+  -id: unsigned int
+  __
+  .. constructeur ..
+  -Operation()
+  .. getters ..
+  +getCompte() : &Compte const
+  +getDebit() : unsigned double const
+  +getCredit() : unsigned double const
+  +getTransaction() : Transaction*
+  .. setters ..
+  +setCompte(Compte& cp) : void
+  +setDebit(double d) : void
+  +setCredit(double c) : void
+  +setId(_id : unsigned int): void
+  +setTransaction(tr :Transaction* ):void
+  +operator!=(op: const Operation&) : bool
+  .. méthodes ..
+  +checkValidite() : bool
+
+  
+}
+
+class Transaction {
+  -date : date
+  -reference : unsigned int
+  -memo : string
+  -operations : vector<Operation*>
+  -rapprochee : bool
+  __
+  .. constructeur ..
+  -Transaction(unsigned int _ref, QDate _date, const QString& _memo, QVector<Operation*> _operations)
+  .. getters ..
+  +getDate() : date const
+  +getReference() : unsigned int
+  +getMemo() : const string& const
+  +getOperations() : vector<Operation*> const
+  +isRaprochee() : bool const
+  ..setters..
+  +setReference(unsigned int _ref) : void
+  +setDate(date _d) : void
+  +setRapproche(bool _rap) : void
+  +setMemo(const string& _m) : void
+}
+
+Transaction *-- "1..*" Operation : crediter
+Transaction *-- "1..*" Operation : debiter
+Compte *-- "*" Operation
+
+class TransactionManager << (S,#FF7700) Singleton >> {
+  - static instance : TransactionManager*
+  - transactions : vector<Transaction*>
+  __
+  .. constructeur ..
+  -TransactionManager()
+  .. getters ..
+  +static getInstance() : &TransactionManager const
+  +getTransactions() : vector<Transaction*> const
+  +getTransaction(ref : QString) const : Transaction*
+  .. méthodes ..
+  +creerTransaction() : &TransactionManager
+  + removeTransaction(ref : QString):void
+  +checkValiditeOperations(operations : const QVector<Operation*>&) : void
+  +checkValiditeOperations(operations : const QVector<Operation> &) const : void
+  +checkValiditeRef(ref : const QString& ) const : void
+  +modifierTransaction(tr :Transaction*, nouvelleRef : const QString&, date: const QDate&,nouveauMemo : const QString&, newOps : const QVector<Operation>&): void
+  +getFilterIterator(c: const Compte&) : FilterIterator
+  +getConstFilterIterator(c: const Compte& ): ConstFilterIterator
+}
+
+TransactionManager o-- Transaction : crée >
+
+class RapprochementCareTaker {
+  -listeMemento : vector<RapprochementMemento*>
+  ..constructeur..
+  + RapprochementCareTaker(AbstractCompte* c)
+  ..getters..
+  +getDernierSolde() const :double
+  .. méthodes ..
+  +sauvegarderSolde(r : RapprochementMemento*) : void
+  +addMemento(s: double, d QDate) : void
+  +supprimerTout() : void
+}
+
+class RapprochementMemento << (M,#FF7700) Memento>> {
+  -solde : double
+  -date : QDate
+  __
+  .. constructeur ..
+  +RapprochementMemento()
+  +RapprochementMemento(s: double,d: QDate)
+  +RapprochementMemento(s: double)
+  .. getters ..
+  +getSolde() : double const
+  +getDate() : date const
+}
+
+RapprochementMemento "*" -- "1" RapprochementCareTaker : gère>
+AbstractCompte "1" -up- "*" RapprochementMemento : crée >
+AbstractCompte "1" -up "1" RapprochementCareTaker: crée>
+
+
+class CompteManager << Facade >> <<Singleton>> {
+  -compteRacine : CompteVirtuel*
+  -nombresComptes : unsigned int
+  -instance : static CompteManager* 
+  -prochainId : static unsigned int
+  -prochaineRefSoldeInitial : static unsigned int
+ 
+  .. constructeur ..
+  -CompteManager(string nomAsso)
+  .. getters ..
+  +static getInstance() : CompteManager
+  +static getManager(): CompteManager&
+  +getRacine() : const CompteVirtuel
+  +getCompte(id : unsigned int ) const : AbstractCompte*
+  +getNomAsso() const : QString
+  .. methodes ..
+  +creerCompte(nom:const QString&, type : const TypeCompte& ,virtuel : const bool& , idParent const unsigned int& ,id: const unsigned int&) : AbstractCompte*
+  +creerCompte(nom : const QString&, type : const TypeCompte&, idParent : const unsigned int&, capitauxPropre: Compte*, soldeInitial : double): AbstractCompte*
+void setNomAsso(const QString& nom) { compteRacine->setNom(nom); }
+  +getCompte(unsigned int id) : AbstractCompte*
+  -isIdAlreadyUsed(id :unsigned int) const : bool
+  -setSoldeInitial(nouveauCompte : Compte*, capitauxPropre : Compte*, montant : double)
+  +supprimerTousLesComptes() : void
+  +supprimerCompte(cpt : AbstractCompte*) : void
+  +getIterator() : Iterator 
+ }
+
+CompteManager -- AbstractCompte : gere
+
+class FileManager << Facade >> {
+  -filename : string
+  -instance : static FileManager*
+  - cm : CompteManager&
+  -tm : TransactionManager&
+  __
+  .. getters ..
+  +getFilename() : string
+  +getFileManager : static FileManager&
+  +getNomFichier() const :QString
+  .. setters ..
+  +setFilename()
+  .. methodes ..
+  -sauvegarderCompte(QDomDocument& doc) const : void
+   -sauvegarderTransaction(doc :QDomDocument& ) const : void
+    - sauvegarderOperations(doc : QDomDocument& , QDomElement& nodeTransaction, Transaction* transaction) const : void
+    - sauvegarderGenerateurs(doc :QDomDocument& ) const: void
+    - sauvegarderHistorique (doc :QDomDocument& , QDomElement& comptenode, const AbstractCompte* c) const : void
+    - importerCompte(doc :QDomDocument& ) const : void
+    - importerTransactions(doc :QDomDocument& ) const : void
+    - importerOperations(transacnode :QDomElement& transacnode) const : QVector<Operation*>
+    - importerGenerateurs(doc : QDomDocument& ) const : void
+    - importerHistorique(comptenode : QDomElement&, c: AbstractCompte*) const : void
+    +creerProjet() : void
+    +importerProjet(filename : const QString& ): void
+    +sauvegarderProjet()
+}
+
+FileManager -- CompteManager : utilise
+FileManager -- TransactionManager : utilise
+
+class MainWindow << GUI >> {
+  -ui: MainWindow*
+  -formOperations : QVector<QFormLayout*>
+  -fenetreSoldeInitial :FenetreSoldeInitial*
+  -fenetreCloture :FenetreCloture*
+  -fenetreReleve :FenetreReleve *
+  -currentProject :QString
+  -hasSaved : bool
+  -editingTransactions : bool
+  --getters--
+  +getCapitauxPropre() : Compte*
+  --methodes--
+  +isFormCreationCompteValide(idCompteParent unsigned int) : bool
+  +resizeTreeWidgetColumns() const: void
+  +afficherTousLesComptes(): void
+  +afficherCompteSurArbre(compte : AbstractCompte*,parent : QTreeWidgetItem* ): QTreeWidgetItem
+  +afficherSousComptesSurArbre(comptes: QVector<AbstractCompte*> , parent: QTreeWidgetItem*): void
+  +ajouterComptesConcret(comptes : QComboBox*): void
+  +affichageOperations(compteCourant: AbstractCompte*): void
+  +affichageTransactions(compteCourant : AbstractCompte* ): void
+  +affichageHistoriqueRapprochement(compteCourant: AbstractCompte* ): void
+  +supprimerLayout(layout : QLayout* ): void
+  +sauvegarderContexte(): void
+  +chargerContexte(): void
+  +importerFichier(cheminFichier: const QString& ): void
+  +setHasSaved(value : bool): void
+  +activerActions(): void
+  +closeEvent(void: QCloseEvent*) : void
+}
+
+MainWindow -- FileManager  
+MainWindow -- CompteManager
+MainWindow -- TransactionManager
+
+class FenetreCloture {
+    ui: FenetreCloture*
+    .. constructeur ..
+    FenetreCloture(parent :QWidget*)
+    ~FenetreCloture()
+     .. methodes ..
+     genererCloture(): void
+}
+
+class FenetreReleve {
+    ui: FenetreReleve*
+    .. constructeur ..
+    FenetreReleve(parent :QWidget*)
+    ~FenetreReleve()
+     .. methodes ..
+     genererReleve(): void
+}
+class FenetreSoldeInitial {
+    -cm : CompteManager&
+    -ui: FenetreSoldeInitial*
+    .. constructeur ..
+    FenetreSoldeInitial(parent :QWidget*)
+    ~FenetreSoldeInitial()
+    ..getters..
+    getCompteChoisi(): Compte*
+     .. methodes ..
+     rafraichirListeCompte(): void
+     ajouterComptesCapitauxPropre(): void
+     ajouterComptesParents(): void
+}
+
+MainWindow --FenetreCloture : possède >
+MainWindow --FenetreReleve : possède >
+MainWindow --FenetreSoldeInitial : possède >
+
+@enduml

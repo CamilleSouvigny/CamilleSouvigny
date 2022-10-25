@@ -1,0 +1,217 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+enum TypeCompte {
+  actif
+  passif
+  depenses
+  recettes
+}
+
+abstract class AbstractCompte <<Abstract>> {
+  # id : integer
+  # nom : string
+  # solde : Solde
+  # parent : CompteVirtuel
+  __
+  .. constructeur ..
+  -AbstractCompte(string nom, CompteVirtuel *parent, Solde solde)
+  .. getters ..
+  +getId() : integer
+  +getNom() : string
+  +getSolde() : double
+  +getParent() : CompteVirtuel
+  +getType() : TypeCompte
+  +devenirVirtuel(id integer): CompteVirtuel
+  +rapprochement(id integer): double
+  +createMemento() : Memento
+  +setMemento(memento : Memento): void
+}
+
+class Memento {
+    solde : string
+    ..getters..
+    +getsolde() : string
+    +setsolde(solde : Solde) : void
+}
+
+class Caretaker {
+    +Memento :  vector<*Memento>
+}
+Caretaker o-- "1" Memento
+AbstractCompte-->Memento
+
+abstract class Solde <<Abstract>> {
+  #montant : double
+  __
+  ..getters..
+  +getMontant() : double
+  ..methode..
+  +abstract crediter()
+  +abstract debiter()
+  +abstract getType()
+}
+
+note right
+  pour créditer/débiter un compte : compte.solde.crediter(montant)
+  pour créer un compte (exemple : actif) lutilisateur rentre :
+    createCompte(nom, actif, virtuel=true, compteParent, solde) dans le manager
+  qui fait appel au constructeur
+    new CompteVirtuel(nom, parent, new SoldeActif(solde))
+end note
+
+.AbstractCompte *-right- "1" Solde : possède >
+
+abstract class SoldeEmploi <<Abstract>> {
+  +crediter(double montant)
+  +debiter(double montant)
+}
+
+abstract class SoldeRessource <<Abstract>> {
+  +crediter(double montant)
+  +debiter(double montant)
+}
+
+SoldeEmploi -up-|> Solde
+SoldeRessource -up-|> Solde
+
+class SoldeActif {
+  __
+  ..constructeur..
+  SoldeActif(float montant)
+  ..getters..
+  +getType() : TypeCompte
+}
+
+class SoldePassif {
+  __
+  ..constructeur..
+  SoldePassif(float montant)
+  ..getters..
+  +getType() : TypeCompte
+}
+
+class SoldeDepense {
+  __
+  ..constructeur..
+  SoldeRecette(float montant)
+  ..getters..
+  +getType() : TypeCompte
+}
+
+class SoldeRecette {
+  __
+  ..constructeur..
+  SoldeRecette(float montant)
+  ..getters..
+  +getType() : TypeCompte
+}
+
+SoldeEmploi <|-- SoldeActif
+SoldeEmploi <|-- SoldeDepense
+SoldeRessource <|-- SoldeRecette
+SoldeRessource <|-- SoldePassif
+
+
+class Compte <<Concrete>> {
+ -operations : vector<*Operation>
+ __
+ ..getters..
+ +getOperations() : vector<*Operation>
+ +getOperation(id integer) : *Operation
+}
+
+class CompteVirtuel <<Concrete>> {
+  - sousComptes : vector<*AbstractCompte>
+  __
+  .. getters ..
+  +getSousComptes() : vector<*AbstractCompte>
+  +getCompte(string nom) : AbstractCompte
+  +getCompte(integer id) : AbstractCompte
+  .. methode ..
+  +createSousCompte(bool virtuel)
+}
+
+CompteVirtuel ..> AbstractCompte : crée
+AbstractCompte "*" --o "0..1" CompteVirtuel : contient <
+AbstractCompte <|-- Compte
+AbstractCompte <|-- CompteVirtuel
+
+class CompteRacine << (S,#FF7700) Singleton >> {
+  __
+  .. constructeur ..
+  -CompteRacine()
+  .. méthodes ..
+  +createCompte(TypeCompte type, bool virtuel, int idParent, double solde) : AbstractCompte
+  +genererBilan()
+  +genererReleve()
+  +genererResultat()
+  +clotureLivre()
+}
+
+CompteRacine *-- "*" AbstractCompte
+CompteRacine ..> AbstractCompte : crée
+
+class Operation {
+  -id : integer
+  -compte : Compte*
+  -debit : unsigned double
+  -credit : unsigned double
+  __
+  .. constructeur ..
+  -Operation(Compte* compte, double montant)
+  .. getters ..
+  +getCompte() : &Compte
+  +getDebit() : unsigned double
+  +getCredit() : unsigned double
+  .. setters ..
+  +setDebit()
+  +setCredit()
+  .. méthodes ..
+  +checkValidite() : bool
+  +echangerValeuresNegatives()
+}
+
+class Transaction {
+  -date : date
+  -reference : int
+  -memo : string
+  -operations : vector<*Operation>
+  -rapprochee : bool
+  __
+  .. constructeur ..
+  -Transaction(date date, int reference, string memo, vector<*Operation>)
+  .. getters ..
+  +getDate() :
+  +getReference() : int
+  +getMemo() : string
+  +isRaprochee() : bool
+  .. méthodes ..
+  +checkValidite() : bool
+}
+
+Transaction "1" *-- "1..*" Operation :crédite
+Transaction "1" *-- "1..*" Operation :débite
+Compte "1" *-- "*" Operation
+
+class TransactionManager << (S,#FF7700) Singleton >> {
+  __
+  .. constructeur ..
+  -TransfertManager()
+  .. méthodes ..
+  +createTransaction(string memo, vector<*Operation>) : Transaction
+}
+
+TransactionManager ..> Transaction : crée
+
+abstract class Singleton <<Abstract>> {
+  -instance : *Singleton
+  __
+  +static getInstance() : *Singleton
+}
+
+Singleton <|-left- TransactionManager
+Singleton <|-right- CompteRacine
+
+
+@enduml

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="projet" type="projetType"/>
+  <xsd:complexType name="compteType">
+    <xsd:sequence>
+      <xsd:element type="xsd:int" name="id"/>
+      <xsd:element type="xsd:string" name="nom"/>
+      <xsd:element type="xsd:string" name="parent"/>
+      <xsd:element type="xsd:byte" name="virtuel"/>
+      <xsd:element type="xsd:string" name="type"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="comptesType">
+    <xsd:sequence>
+      <xsd:element type="compteType" name="compte" maxOccurs="unbounded" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="operationType">
+    <xsd:sequence>
+      <xsd:element type="xsd:int" name="idOp"/>
+      <xsd:element type="xsd:byte" name="compte"/>
+      <xsd:element type="xsd:float" name="debit"/>
+      <xsd:element type="xsd:float" name="credit"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="operationsType">
+    <xsd:sequence>
+      <xsd:element type="operationType" name="operation" maxOccurs="unbounded" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="transactionType">
+    <xsd:sequence>
+      <xsd:element type="xsd:string" name="ref"/>
+      <xsd:element type="xsd:short" name="annee"/>
+      <xsd:element type="xsd:byte" name="mois"/>
+      <xsd:element type="xsd:byte" name="jour"/>
+      <xsd:element type="xsd:string" name="memo"/>
+      <xsd:element type="xsd:byte" name="rapprochement"/>
+      <xsd:element type="operationsType" name="operations"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="transactionsType">
+    <xsd:sequence>
+      <xsd:element type="transactionType" name="transaction" maxOccurs="unbounded" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="projetType">
+    <xsd:sequence>
+      <xsd:element type="comptesType" name="comptes"/>
+      <xsd:element type="transactionsType" name="transactions"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

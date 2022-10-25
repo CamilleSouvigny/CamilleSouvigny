@@ -1,0 +1,128 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+enum TypeCompte <<enum>> {
+  actif
+  passif
+  recette
+  depense
+}
+
+abstract class AbstractCompte <<Abstract>> {
+  # id : integer
+  # nom : string
+  # solde : float
+  # parent : CompteVirtuel
+  # type : TypeCompte
+  __
+  .. constructeur ..
+  -AbstractCompte(string nom, string type, CompteVirtuel *parent) : nom(nom), type(type), parent(parent)
+  .. getters ..
+  +getId() : integer
+  +getNom() : string
+  +getSolde() : float
+  +getType() : TypeCompte
+  .. setters ..
+  +setSolde()
+}
+
+class Compte <<Concrete>> {
+
+}
+
+class CompteVirtuel <<Concrete>> {
+  # sousComptes : vector<AbstractCompte>
+  __
+  .. getters ..
+  +getSousComptes() : vector<AbstractCompte>
+  +getCompte(string nom) : AbstractCompte
+  +getCompte(integer id) : AbstractCompte
+  .. méthodes ..
+  +addCompte()
+  +deleteCompte()
+}
+
+AbstractCompte "*" --o "0..1" CompteVirtuel : contient <
+AbstractCompte <|-- Compte
+AbstractCompte <|-- CompteVirtuel
+
+class CompteRacine << (S,#FF7700) Singleton >> << Factory >> {
+  -instance : *CompteRacine
+  __
+  .. constructeur ..
+  -CompteRacine()
+  .. getters ..
+  +static getInstance() : CompteRacine
+  .. méthodes ..
+  +createCompte(TypeCompte type, bool virtuel) : AbstractCompte
+  +cloture()
+  +genererBilan()
+  +genererReleve()
+  +genererResultat()
+  +clotureLivre()
+}
+
+note right
+  type = null
+  parent = null
+end note
+
+CompteRacine -up-|> CompteVirtuel
+CompteRacine .up.> Compte : crée
+CompteRacine .up.> CompteVirtuel : crée
+
+class Operation {
+  -compte : Compte*
+  -debit : unsigned double
+  -credit : unsigned double
+  __
+  .. constructeur ..
+  -Transaction(Compte* compte, double debit, double credit)
+  .. getters ..
+  +getCompte() : &Compte
+  +getDebit() : unsigned double
+  +getCredit() : unsigned double
+  .. setters ..
+  +setDebit()
+  +setCredit()
+  .. méthodes ..
+  +checkValidite() : bool
+  +echangerValeuresNegatives()
+}
+
+class Transaction {
+  -date : date
+  -reference : int
+  -memo : string
+  -operations : vector<*Operation>
+  -rapprochee : bool
+  __
+  .. constructeur ..
+  -Transaction(date date, int reference, string memo, vector<*Operation>)
+  .. getters ..
+  +getDate() :
+  +getReference() : int
+  +getMemo() : string
+  +isRaprochee() : bool
+  .. méthodes ..
+  +checkValidite() : bool
+}
+
+Transaction "1" *-- "2..*" Operation
+Compte "1" *-- "*" Operation
+
+class TransactionManager << (S,#FF7700) Singleton >> {
+  -instance : *TransfertManager
+  __
+  .. constructeur ..
+  -TransfertManager()
+  .. getters ..
+  +static getInstance() : CompteRacine
+  .. méthodes ..
+  +createTransaction(string memo, vector<*Operation>) : Transaction
+
+}
+
+TransactionManager ..> Transaction : crée
+
+@enduml

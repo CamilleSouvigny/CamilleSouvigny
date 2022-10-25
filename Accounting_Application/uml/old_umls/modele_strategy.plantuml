@@ -1,0 +1,170 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+enum TypeCompte {
+  actif
+  depense
+  passif
+  revenu
+}
+
+class CompteRacine << (S,#FF7700) Singleton >> << Factory >> {
+  -instance : *CompteRacine
+  - const CompteVirtuelStrategy& : strategy
+  __
+  .. constructeur ..
+  -CompteRacine()
+  .. getters ..
+  +static getInstance() : CompteRacine
+  .. méthodes ..
+  +createCompteVirtuel(const CompteVirtuelStrategy& strategy) : CompteVirtuel
+  +getCompte(int id) : *AbstractCompte
+  +cloture()
+  +genererBilan()
+  +genererReleve()
+  +genererResultat()
+  +clotureLivre()
+}
+
+class AbstractCompte <<Abstract>> {
+  # id : integer
+  # nom : string
+  # solde : float
+  # parent : CompteVirtuel
+  # virtuel : bool
+  __
+  .. constructeur ..
+  -AbstractCompte(string nom, CompteVirtuel *parent) : nom(nom), parent(parent)
+  .. getters ..
+  +getId() : integer
+  +getNom() : string
+  +getSolde() : float
+  +getType() : TypeCompte
+  +isVirtual() : bool
+  .. setters ..
+  +setSolde()
+  .. methodes ..
+  +virtual crediter()
+  +virtual debiter()
+}
+
+CompteRacine *-- "*" AbstractCompte
+CompteRacine ..> AbstractCompte: crée
+
+class CompteVirtuel {
+  #type : TypeEmploi
+  # sousComptes : vector<AbstractCompte>
+  __
+  .. getters ..
+  +getSousComptes() : vector<AbstractCompte>
+  +getCompte(string nom) : AbstractCompte
+  +getCompte(integer id) : AbstractCompte
+  .. méthodes ..
+  + createCompte() : Compte
+  +deleteCompte()
+}
+
+AbstractCompte <|-- CompteVirtuel
+AbstractCompte "*" --o "0..1" CompteVirtuel : contient <
+
+class Compte {
+  - operations : vector<*Operation>
+ __
+  .. getters ..
+  +getOperation() : vector<*Operations>
+  +getOperation(int id) : *Operations
+}
+
+CompteVirtuelStrategy *- CompteRacine
+class CompteVirtuelStrategy <<Interface>>{
+ __
++ createCompteVirtuel(TypeCompte type) :AbstractCompte
+}
+note left
+  si TypeCompte=Actif ou Recette, alors utilisation
+  de AbstractCompteEmploi -> création CompteVirtuelEmploi
+  Si TypeCompte = Passif ou Dépense, alors utilisation
+  de AbstractCompteRessource-> création CompteVirtuelRessource
+end note
+
+
+class StrategyCompteEmploi {
+ __
+  +createCompteVirtuel(TypeCompte type, int id) :CompteVirtuel
+}
+
+class StrategyCompteRessource {
+  __
+  +createCompteVirtuel(TypeCompte type, int id) :CompteVirtuel
+}
+
+CompteVirtuelStrategy <|--StrategyCompteEmploi
+CompteVirtuelStrategy <|-- StrategyCompteRessource
+
+CompteVirtuel "1"- "*" Compte : cree >
+note bottom
+Les comptes concrets sont crées à partir du CompteVirtuelEmploi
+ce qui permet de "transférer" le type de compte du CompteVirtuelEmploi
+au CompteConcret (les sous comptes étant du même type que celui
+de leur parent)
+end note
+
+AbstractCompte <|-- Compte
+
+class Operation {
+  -compte : Compte*
+  -debit : unsigned double
+  -credit : unsigned double
+  __
+  .. constructeur ..
+  -Transaction(Compte* compte, double debit, double credit)
+  .. getters ..
+  +getCompte() : &Compte
+  +getDebit() : unsigned double
+  +getCredit() : unsigned double
+  .. setters ..
+  +setDebit()
+  +setCredit()
+  .. méthodes ..
+  +checkValidite() : bool
+  +echangerValeuresNegatives()
+}
+
+class Transaction {
+  -date : date
+  -reference : int
+  -memo : string
+  -operations : vector<*Operation>
+  -rapprochee : bool
+  __
+  .. constructeur ..
+  -Transaction(date date, int reference, string memo, vector<*Operation>)
+  .. getters ..
+  +getDate() :
+  +getReference() : int
+  +getMemo() : string
+  +isRaprochee() : bool
+  .. méthodes ..
+  +checkValidite() : bool
+}
+
+Transaction "1" *-- "2..*" Operation
+Compte "1" *-- "*" Operation : débite
+Compte "1" *-- "*" Operation : crédite
+
+class TransactionManager << (S,#FF7700) Singleton >> {
+  -instance : *TransfertManager
+  __
+  .. constructeur ..
+  -TransfertManager()
+  .. getters ..
+  +static getInstance() : CompteRacine
+  .. méthodes ..
+  +createTransaction(string memo, vector<*Operation>) : Transaction
+
+}
+CompteVirtuel *-- "*"Compte : est composé de >
+
+Transaction <.TransactionManager : crée
+
+@enduml
