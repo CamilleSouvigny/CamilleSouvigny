@@ -39,6 +39,7 @@ Project 4 : Wumpus Game Solver: Python, Gophersat 🎓✅
 Project 5 : Fake News Detection : Jade, Java. 🎓📥
 
 ###  Others
+
 Project 6 - Database for an Online Payment App: SQL, Neo4J, MongoDB 🎓📥
 
 Project 7 - Accounting App: C++, Qt, UML, Doxygen 🎓📥
