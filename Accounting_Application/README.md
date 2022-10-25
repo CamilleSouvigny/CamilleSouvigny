@@ -6,7 +6,7 @@ Using the software, the user can create multiple nested accounts, enter, correct
 
 ## Software interface
 
-<img src="uml/app_interface.png" width="400"/> 
+<img src="uml/app_interface.png" width="550"/> 
 
 ## Software features
 
@@ -26,7 +26,7 @@ The operations implemented in the application are :
 
 Doxygen were used to generate a complete html documentation.
 
-<img src="uml/doctype.png" width="400"/> 
+<img src="uml/doctype.png" width="550"/> 
 
 ## UML : Software architecture
 
