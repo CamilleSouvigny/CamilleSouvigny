@@ -8,7 +8,7 @@ Most of studies relating to information propagation on social network were done 
 
 ## Environment description
 
-![image](Environment_descriptions/Environment_description.png)
+<img src="Environment_descriptions/Environment_description.png" width="400"/>
 
 ### Environment agent input
 
