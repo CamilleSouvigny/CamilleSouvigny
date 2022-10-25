@@ -6,7 +6,7 @@ Using the software, the user can create multiple nested accounts, enter, correct
 
 ## Software interface
 
-<img src="Accounting_Application/app_interface.png" width="400"/> 
+<img src="uml/app_interface.png" width="400"/> 
 
 ## Software features
 
@@ -25,7 +25,7 @@ save the context: when the application is started, the state of the application 
 
 ## Doctype
 
-<img src="Accounting_Application/doctype.png" width="400"/> 
+<img src="uml/doctype.png" width="400"/> 
 
 ## UML
 
