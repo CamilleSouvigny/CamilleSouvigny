@@ -20,16 +20,25 @@ Following projects have been done in Python, R, Java and C++.
 
 ## Project Content
 
-Project 1 : Detection of drug consumption habits : Python 🎓✅
+### Machine Learning projects
 
-Project 2 : Wumpus Game Solver: Python, Gophersat 🎓✅
+Project 1 : Customer segmentation using Collaborative clustering : R ✅
 
-Project 3 : Customer segmentation using Collaborative clustering : R ✅
+Project 2 : Detection of drug consumption habits : Python 🎓✅
 
-Project 4 : Costumer Churn : Python, Pytorch. ✅
+### Deep Learning
+
+Project 3 : Costumer Churn : Python, Pytorch. ✅
+
+### Logic Programming
+
+Project 4 : Wumpus Game Solver: Python, Gophersat 🎓✅
+
+### Multi Agent Programming
 
 Project 5 : Fake News Detection : Jade, Java. 🎓📥
 
+###  Others
 Project 6 - Database for an Online Payment App: SQL, Neo4J, MongoDB 🎓📥
 
 Project 7 - Accounting App: C++, Qt, UML, Doxygen 🎓📥
