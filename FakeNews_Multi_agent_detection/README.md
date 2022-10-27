@@ -14,7 +14,7 @@ Most of studies relating to information propagation on social network were done 
 
 Individuals subscribe to the environment agent that is responsible for news creation. 
 
-<img src="Environment_descriptions/subscribe.png" width="425"/> <img src="Environment_descriptions/generate_news.png" width="425"/> <img src="Environment_descriptions/inform.png" width="425"/> <img src="Environment_descriptions/propagate.png" width="425"/> 
+<img src="Environment_descriptions/subscribe.png" width="425"/> <img src="Environment_descriptions/generate_news.png" width="380"/> <img src="Environment_descriptions/inform.png" width="425"/> <img src="Environment_descriptions/propagate.png" width="425"/> 
 
 ### Individuals agent input
 

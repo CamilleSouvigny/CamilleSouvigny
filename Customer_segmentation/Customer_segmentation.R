@@ -302,7 +302,6 @@ fviz_cluster(kmenoids, data = df)
 
 #######################  Density functions clustering  ############################# 
 ##################################  Gaussian Mixture Modelling  #################### 
-
 gm_cl <- Mclust(datacp)
 (hc1 <- hc(datacp, modelName = "VVV", use = "SVD"))
 (hc2 <- hc(datacp, modelName = "VVV", use = "VARS"))
@@ -310,7 +309,6 @@ gm_cl <- Mclust(datacp)
 gm_cah1 <- Mclust(datacp, initialization = list(hcPairs = hc1))
 gm_cah2 <- Mclust(datacp, initialization = list(hcPairs = hc2))
 gm_cah3 <- Mclust(datacp, initialization = list(hcPairs = hc3))
-
 gm_cl$G
 gm_cah1$G 
 gm_cah2$G
@@ -352,6 +350,7 @@ bootClust <- MclustBootstrap(gm_cah3, nboot=20)
 summary(bootClust, what = "se")
 summary(bootClust, what = "ci")
 
+
 density_cluster <- mixmodCluster(datacp, nbCluster=4:10, criterion=c("BIC", "ICL", "NEC"))
 #  Gaussian_pk_Lk_C : quantitative data
 ## Each class is caracterised by its own law of pb. use bayes pb. Generalisation of Kmeans.
@@ -366,9 +365,9 @@ gaus_stat[c("wb.ratio","within.cluster.ss","avg.silwidth","clus.avg.silwidths")]
 
 
 
-##################################  DBSCAN  #################### 
-
+#################################  DBSCAN  #################### 
 # determine optimal eps value : the average of the distances of every point to its k nearest neighbor
+datacp_matrix <- data.matrix(datacp)
 kNNdistplot(datacp_matrix, k=4)
 abline(h=1, col="red")
 
@@ -391,7 +390,7 @@ tuning_dbscan <- function( data, nbPoints_max=50, epsilon ) {
   result
 }
 
-t_dbscan <- tuning_dbscan(datacp_matrix, 50, seq(from = 0.1, to = 15, by = 0.1))
+t_dbscan <- tuning_dbscan(datacp_matrix, 50, seq(from = 0.1, to = 15, by = 0.5))
 
 t_dbscan[which.max(t_dbscan)]
 # max 4 et 2.3 
@@ -412,11 +411,6 @@ db_cs[c("wb.ratio","within.cluster.ss","avg.silwidth","clus.avg.silwidths")]
 fviz_cluster(db, data = datacp, stand = FALSE,
              ellipse = FALSE, show.clust.cent = TRUE,
              geom = "point",palette = "jco", ggtheme = theme_classic())
-
-
-
-
-
 
 
 ####################### Hierarchical Clustering    #############
@@ -508,7 +502,7 @@ fviz_cluster(hk, palette = "jco", repel = TRUE,
 all_cl <- cbind(kmeans7 = km.boot_simple$result$result$cluster, #60%
                 kmenoids = kmenoids$clustering,
                 gm = gm_cl$classification,
-                gmcah = gm_cah3$classification, 
+                gmcah = gm_cah1$classification, 
                 gmm_gaus = density_cluster@bestResult@partition,
                 dbscan = db$cluster ,
                 hac.ward = cutree(cah.ward,k=8),
