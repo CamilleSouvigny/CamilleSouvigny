@@ -32,7 +32,6 @@ Following projects have been done in Python, R, Java and C++.
 
 ### Logic Programming
 
-Project 4 : Wumpus Game Solver: 
 
 - **Project 4 - [Wumpus Game Solver](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Wumpus_GameSolver "Wumpus Game Solver")**: Python, Gophersat 🎓✅
 
@@ -40,9 +39,11 @@ Project 4 : Wumpus Game Solver:
 
 - **Project 5 - [Fake News Detection](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/FakeNews_Multi_Agent_Detection "Fake News Detection")**: Jade, Java. 🎓✅
 
-###  Others
+### Database Architecture
 
-Project 6 - Database for an Online Payment App: SQL, Neo4J, MongoDB 📥
+- Project 6 - Database for an Online Payment App: Oracle, Neo4J, MongoDB 📥
+
+###  Others
 
 - **Project 7 - [Accounting App](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Accounting_Application "Accounting App")**: C++, Qt, UML, Doxygen 🎓✅
 
