@@ -28,28 +28,28 @@ Following projects have been done in Python, R, Java and C++.
 
 - **Project 3 - [Customer activity churn](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Customer_Churn "Customer activity churn")**:  Python, Survival Analysis, Pysurvival, Pytorch 📥
 
-- 
 
 ### Natural Langage Processing
 
+- **Project 4 - [Twitter's perception through time](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Customer_Churn "Twitter's perception through time")**:  Python 📌
 
 ### Logic Programming
 
-- **Project 4 - [Wumpus Game Solver](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Wumpus_GameSolver "Wumpus Game Solver")**: Python, Gophersat 🎓✅
+- **Project 5 - [Wumpus Game Solver](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Wumpus_GameSolver "Wumpus Game Solver")**: Python, Gophersat 🎓✅
 
 ### Multi Agent Programming
 
-- **Project 5 - [Fake News Detection](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/FakeNews_Multi_Agent_Detection "Fake News Detection")**: Jade, Java. 🎓✅
+- **Project 6 - [Fake News Detection](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/FakeNews_Multi_Agent_Detection "Fake News Detection")**: Jade, Java. 🎓✅
 
 ### Database Architecture
 
-- Project 6 - Database for an Online Payment App: Oracle, Neo4J, MongoDB 📥
+- Project 7 - Database for an Online Payment App: Oracle, Neo4J, MongoDB 📥
 
-- **Project 7 - [Web Scraping](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Web_Scraping "Web_Scraping")**: Python ✅
+- **Project 8 - [Web Scraping](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Web_Scraping "Web_Scraping")**: Python ✅
 
 ###  Others
 
-- **Project 8 - [Accounting App](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Accounting_Application "Accounting App")**: C++, Qt, UML, Doxygen 🎓✅
+- **Project 9 - [Accounting App](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Accounting_Application "Accounting App")**: C++, Qt, UML, Doxygen 🎓✅
 
 
 

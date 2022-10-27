@@ -1,4 +1,4 @@
-# Analysis of twitter's perception through time by its users
+# Analysis of twitter's perception through time
 
 This projects aims to analyse twittos perception of twitter through time, to see how specific events impact twitter's perception.  
 
