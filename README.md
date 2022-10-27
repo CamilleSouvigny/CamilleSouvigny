@@ -28,6 +28,11 @@ Following projects have been done in Python, R, Java and C++.
 
 - **Project 3 - [Customer activity churn](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Customer_Churn "Customer activity churn")**:  Python, Survival Analysis, Pysurvival, Pytorch 📥
 
+- 
+
+### Natural Langage Processing
+
+
 ### Logic Programming
 
 - **Project 4 - [Wumpus Game Solver](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Wumpus_GameSolver "Wumpus Game Solver")**: Python, Gophersat 🎓✅
