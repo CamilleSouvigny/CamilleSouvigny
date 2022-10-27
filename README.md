@@ -26,9 +26,7 @@ Following projects have been done in Python, R, Java and C++.
 
 - **Project 2 - [Detection of drug consumption habits](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Drug_Consumption_Classification "Detection of drug consumption habits")**:  R 🎓✅
 
-### Deep Learning
-
-- **Project 3 - [Customer activity churn](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Customer_Churn "Customer activity churn")**:  Python, Pytorch 🎓✅
+- **Project 3 - [Customer activity churn](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Customer_Churn "Customer activity churn")**:  Python, Survival Analysis, Pysurvival, Pytorch 📥
 
 ### Logic Programming
 
