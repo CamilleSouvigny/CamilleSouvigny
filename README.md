@@ -22,7 +22,8 @@ Following projects have been done in Python, R, Java and C++.
 
 ### Machine Learning projects
 
-Project 1 : Customer segmentation using Collaborative clustering : R ✅
+- **Project 1 - [Customer segmentation using Collaborative clustering](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Customer_segmentation "Customer segmentation using Collaborative clustering")**:  R ✅
+
 
 Project 2 : Detection of drug consumption habits : Python 🎓✅
 
