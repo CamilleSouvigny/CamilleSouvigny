@@ -32,7 +32,6 @@ Following projects have been done in Python, R, Java and C++.
 
 ### Logic Programming
 
-
 - **Project 4 - [Wumpus Game Solver](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Wumpus_GameSolver "Wumpus Game Solver")**: Python, Gophersat 🎓✅
 
 ### Multi Agent Programming
@@ -43,10 +42,12 @@ Following projects have been done in Python, R, Java and C++.
 
 - Project 6 - Database for an Online Payment App: Oracle, Neo4J, MongoDB 📥
 
+- **Project 7 - [Web Scraping](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Web_Scraping "Web_Scraping")**: Python ✅
+
 ###  Others
 
-- **Project 7 - [Accounting App](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Accounting_Application "Accounting App")**: C++, Qt, UML, Doxygen 🎓✅
+- **Project 8 - [Accounting App](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Accounting_Application "Accounting App")**: C++, Qt, UML, Doxygen 🎓✅
 
-- **Project 8 - [Web Scraping](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Web_Scraping "Web_Scraping")**: Python ✅
+
 
 
