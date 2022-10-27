@@ -24,25 +24,26 @@ Following projects have been done in Python, R, Java and C++.
 
 - **Project 1 - [Customer segmentation using Collaborative clustering](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Customer_segmentation "Customer segmentation using Collaborative clustering")**:  R ✅
 
-
-Project 2 : Detection of drug consumption habits : Python 🎓✅
+- **Project 2 - [Detection of drug consumption habits](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Drug_Consumption_Classification "Detection of drug consumption habits")**:  R 🎓✅
 
 ### Deep Learning
 
-Project 3 : Customer Churn : Python, Pytorch. ✅
+- **Project 3 - [Customer activity churn](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Customer_Churn "Customer activity churn")**:  Python, Pytorch 🎓✅
 
 ### Logic Programming
 
-Project 4 : Wumpus Game Solver: Python, Gophersat 🎓✅
+Project 4 : Wumpus Game Solver: 
+
+- **Project 4 - [Wumpus Game Solver](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Wumpus_GameSolver "Wumpus Game Solver")**: Python, Gophersat 🎓✅
 
 ### Multi Agent Programming
 
-Project 5 : Fake News Detection : Jade, Java. 🎓📥
+- **Project 5 - [Fake News Detection](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/FakeNews_Multi_Agent_Detection "Fake News Detection")**: Jade, Java. 🎓✅
 
 ###  Others
 
-Project 6 - Database for an Online Payment App: SQL, Neo4J, MongoDB 🎓📥
+Project 6 - Database for an Online Payment App: SQL, Neo4J, MongoDB 📥
 
-Project 7 - Accounting App: C++, Qt, UML, Doxygen 🎓📥
+- **Project 7 - [Accounting App](https://github.com/CamilleSouvigny/CamilleSouvigny/tree/main/Accounting_Application "Accounting App")**: C++, Qt, UML, Doxygen 🎓📥
 
 
