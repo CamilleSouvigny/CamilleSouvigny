@@ -365,14 +365,14 @@ gaus_stat[c("wb.ratio","within.cluster.ss","avg.silwidth","clus.avg.silwidths")]
 
 
 
-#################################  DBSCAN  #################### 
+##################################  DBSCAN  #################### 
 # determine optimal eps value : the average of the distances of every point to its k nearest neighbor
 datacp_matrix <- data.matrix(datacp)
-kNNdistplot(datacp_matrix, k=4)
+kNNdistplot(datacp_matrix, k=5)
 abline(h=1, col="red")
 
  
-tuning_dbscan <- function( data, nbPoints_max=50, epsilon ) {
+tuning_dbscan <- function( data, nbPoints_max=5, epsilon ) {
   result=list()
   for (MinPoint in 2:nbPoints_max) {
     gc()
@@ -381,27 +381,24 @@ tuning_dbscan <- function( data, nbPoints_max=50, epsilon ) {
       db.fit = dbscan(datacp_matrix, eps, minPts=MinPoint)
       # consider only clusters with less than 5% of noise points
       if (length(unique(db.fit$cluster))>3 & (sum(db.fit$cluster==0)+1)*100/length(db.fit$cluster)<5) {
-          db_cs = cluster.stats(dist_acp, db.fit$cluster)
-          print(db_cs$avg.silwidth)
-          result[[paste(MinPoint, eps, sep="_")]]= db_cs$avg.silwidth
+          #db_cs = cluster.stats(dist_acp, db.fit$cluster)
+          #print(db_cs$avg.silwidth)
+          result[[paste(MinPoint, eps, sep="_")]]= db.fit
       }
     }
   }
   result
 }
 
-t_dbscan <- tuning_dbscan(datacp_matrix, 50, seq(from = 0.1, to = 15, by = 0.5))
+t_dbscan <- tuning_dbscan(datacp_matrix, 10, seq(from = 0.1, to = 2, by = 0.1))
 
 t_dbscan[which.max(t_dbscan)]
-# max 4 et 2.3 
+
+db = dbscan(datacp_matrix, 0.1 , minPts=5)
+hullplot(datacp_matrix, db$cluster)
 
 length(unique(db$cluster))
 (sum(db$cluster==0)+100)*100/length(db$cluster)
-
-
-db = dbscan(datacp_matrix, 1 , minPts=10)
-cluster.stats(dist_acp, db$cluster)
-hullplot(datacp_matrix, db$cluster)
 
 db_cs = cluster.stats(dist_acp, db$cluster)
 
